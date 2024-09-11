@@ -41,13 +41,58 @@ This boilerplate template helps you quickly start developing plugins for [Obsidi
 
 ## 🚢 Releasing New Versions
 
-1. Update `manifest.json` and `versions.json` with the new version number.
-2. Run:
+1. Determine the new version number following [Semantic Versioning](https://semver.org/):
+   - MAJOR version for incompatible API changes
+   - MINOR version for backwards-compatible functionality additions
+   - PATCH version for backwards-compatible bug fixes
+
+2. Update `manifest.json` with the new version number.
+
+3. Update `versions.json` if it exists in your repository.
+
+4. Update the version in `package.json` if you're using npm/yarn for dependency management.
+
+5. Commit these changes:
     ```bash
-    yarn version [patch|minor|major]
+    git add manifest.json versions.json package.json
+    git commit -m "Bump version to X.Y.Z"
     ```
-3. Create a new GitHub release using the version number as the "Tag version".
-4. Upload `manifest.json`, `main.js`, and `styles.css` as binary attachments to the release.
+
+6. Create a new git tag for the version:
+    ```bash
+    git tag -a X.Y.Z -m "Version X.Y.Z"
+    ```
+
+7. Push the changes and the new tag to GitHub:
+    ```bash
+    git push origin master
+    git push origin --tags
+    ```
+
+8. Create a new GitHub release using the version number as the "Tag version".
+
+9. Upload `manifest.json`, `main.js`, and `styles.css` as binary attachments to the release.
+
+### Automated Version Update (Optional)
+
+You can use the following script to automate the version update process:
+
+```bash
+yarn version
+```
+
+This command will:
+1. Display the current version and prompt for a new one
+2. Update the version in `package.json`
+3. Run a `version-bump.mjs` script to update `manifest.json` and `versions.json`
+4. Create a git commit with the changes
+
+After running this command, manually push the tags and changes to the remote repository:
+
+```bash
+git push origin --tags
+git push
+```
 
 ## 🌟 Adding Your Plugin to the Community List
 
