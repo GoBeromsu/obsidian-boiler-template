@@ -39,84 +39,11 @@ This boilerplate template helps you quickly start developing plugins for [Obsidi
 3. Reload Obsidian to load the new version of your plugin.
 4. Enable the plugin in Obsidian's settings.
 
-## 🚢 Releasing New Versions
-
-1. Determine the new version number following [Semantic Versioning](https://semver.org/):
-   - MAJOR version for incompatible API changes
-   - MINOR version for backwards-compatible functionality additions
-   - PATCH version for backwards-compatible bug fixes
-
-2. Update `manifest.json` with the new version number.
-
-3. Update `versions.json` if it exists in your repository.
-
-4. Update the version in `package.json` if you're using npm/yarn for dependency management.
-
-5. Commit these changes:
-    ```bash
-    git add manifest.json versions.json package.json
-    git commit -m "Bump version to X.Y.Z"
-    ```
-
-6. Create a new git tag for the version:
-    ```bash
-    git tag -a X.Y.Z -m "Version X.Y.Z"
-    ```
-
-7. Push the changes and the new tag to GitHub:
-    ```bash
-    git push origin master
-    git push origin --tags
-    ```
-
-8. Create a new GitHub release using the version number as the "Tag version".
-
-9. Upload `manifest.json`, `main.js`, and `styles.css` as binary attachments to the release.
-
-### Automated Version Update (Optional)
-
-You can use the following script to automate the version update process:
-
-```bash
-yarn version
-```
-
-This command will:
-1. Display the current version and prompt for a new one
-2. Update the version in `package.json`
-3. Run a `version-bump.mjs` script to update `manifest.json` and `versions.json`
-4. Create a git commit with the changes
-
-After running this command, manually push the tags and changes to the remote repository:
-
-```bash
-git push origin --tags
-git push
-```
-
 ## 🌟 Adding Your Plugin to the Community List
 
 1. Publish an initial version.
 2. Ensure you have a `README.md` in your repository root.
 3. Submit a pull request to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases).
-
-## 🛠️ Manual Installation
-
-Copy `main.js`, `styles.css`, and `manifest.json` to your vault's `.obsidian/plugins/your-plugin-id/` directory.
-
-## 💰 Funding
-
-To add funding information, update the `fundingUrl` field in `manifest.json`:
-
-```json
-{
-	"fundingUrl": "https://example.com/funding"
-}
-```
-
-## 📚 API Documentation
-
-For detailed API documentation, visit the [Obsidian Plugin API](https://github.com/obsidianmd/obsidian-api).
 
 ## 📄 License
 
