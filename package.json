@@ -11,7 +11,10 @@
 		"test": "vitest run",
 		"ci": "pnpm run build && pnpm run lint && pnpm run test",
 		"version": "node scripts/version.mjs",
-		"postversion": "git push && git push --tags"
+		"postversion": "git push && git push --tags",
+		"release:patch": "pnpm lint:fix && pnpm version patch",
+		"release:minor": "pnpm lint:fix && pnpm version minor",
+		"release:major": "pnpm lint:fix && pnpm version major"
 	},
 	"keywords": [],
 	"author": "Beomsu Koh",
