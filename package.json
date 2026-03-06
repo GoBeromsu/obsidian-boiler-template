@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "sh update-version.sh"
+		"version": "node scripts/version.mjs",
+		"postversion": "git push && git push --tags"
 	},
 	"keywords": [],
 	"author": "Beomsu Koh",
