@@ -18,7 +18,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['scripts/**/*.{js,mjs}', 'esbuild.config.mjs', 'version-bump.mjs'],
+    files: ['scripts/**/*.{js,mjs}', 'tooling/**/*.{js,mjs}', 'esbuild.config.mjs', 'version-bump.mjs'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

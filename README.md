@@ -1,50 +1,73 @@
 # Obsidian Plugin Boilerplate
 
-This boilerplate template helps you quickly start developing plugins for [Obsidian](https://obsidian.md).
+This boilerplate template is the source of truth for shared tooling patterns across the sibling Obsidian plugin repositories in this workspace.
 
-## 🏁 Getting Started
+## Getting Started
 
-1. **Fork this repository:**
-   Navigate to https://github.com/GoBeromsu/obsidian-boiler-template and click the "Fork" button in the top-right corner of the page. This will create a copy of the repository in your GitHub account.
+1. Fork this repository:
+   Visit `https://github.com/GoBeromsu/obsidian-boiler-template` and create a fork in your account.
+2. Clone your fork:
 
-2. **Clone your forked repository:**
+   ```bash
+   git clone https://github.com/your-username/obsidian-boiler-template.git
+   ```
 
-    ```bash
-    git clone https://github.com/your-username/obsidian-boiler-template.git
-    ```
+3. Update personal details before publishing:
+   - `LICENSE`
+   - `package.json`
+   - `manifest.json`
+4. Install dependencies:
 
-3. **Update personal details:**
-   Before proceeding, make sure to update the following files with your personal information:
+   ```bash
+   cd your-plugin-name
+   pnpm install
+   ```
 
-    - `LICENSE`: Update the year and your name.
-    - `package.json`: Update the `author` field.
-    - `manifest.json`: Update the `author`, `authorUrl`, and other relevant fields.
+5. Start development:
 
-4. **Install dependencies:**
+   ```bash
+   pnpm run dev
+   ```
 
-    ```bash
-    cd your-plugin-name
-    yarn install
-    ```
+## Shared Tooling Workflow
 
-5. **Build the plugin:**
-    ```bash
-    yarn run dev
-    ```
+Shared plugin tooling now lives under `tooling/` in this repository:
+- `tooling/shared/` contains the canonical synced `dev.mjs` and `version.mjs` scripts.
+- `tooling/sync/` contains the workflow renderers and sync engine.
+- Each plugin repo declares repo-specific values in `boiler.config.mjs`.
 
-## 💻 Development Workflow
+To propagate shared tooling changes from this template to the configured plugin repos:
 
-1. Make changes to `main.ts` or create new `.ts` files.
-2. Run `yarn run dev` to compile changes to `main.js`.
-3. Reload Obsidian to load the new version of your plugin.
-4. Enable the plugin in Obsidian's settings.
+```bash
+pnpm run sync:plugins
+```
 
-## 🌟 Adding Your Plugin to the Community List
+Useful variants:
+
+```bash
+node scripts/sync-to-plugins.mjs --dry-run
+node scripts/sync-to-plugins.mjs --targets Metadata-Auto-Classifier,obsidian-eagle-plugin,obsidian-smart-connections
+```
+
+The sync command copies or renders these files into each target repo:
+- `scripts/dev.mjs`
+- `scripts/version.mjs`
+- `.github/workflows/ci.yml`
+- `.github/workflows/release.yml`
+
+## Plugin Development Workflow
+
+1. Make changes in `src/`.
+2. Run `pnpm run dev` to build and sync plugin output into a target vault.
+3. Reload the plugin in Obsidian.
+4. Enable the plugin in Obsidian settings if needed.
+
+## Release Checklist
 
 1. Publish an initial version.
-2. Ensure you have a `README.md` in your repository root.
+2. Ensure the repo root contains a `README.md`.
 3. Submit a pull request to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases).
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
