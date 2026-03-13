@@ -13,6 +13,9 @@ export default {
       ],
     },
   },
+  version: {
+    stageFiles: ['manifest.json', 'versions.json'],
+  },
   ci: {
     pushBranches: ['**'],
     testResultsFile: 'test-results.xml',

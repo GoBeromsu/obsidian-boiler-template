@@ -147,7 +147,7 @@ export function renderCiWorkflow(config) {
   ];
 
   if (testResultsFile) {
-    lines.push('', 'permissions:', '  checks: write');
+    lines.push('', 'permissions:', '  checks: write', '  pull-requests: write');
   }
 
   lines.push(
@@ -248,23 +248,13 @@ export async function loadBoilerConfig(targetRoot) {
 }
 
 function createWriteOperation(filePath, content) {
-  if (fs.existsSync(filePath)) {
-    const current = fs.readFileSync(filePath, 'utf8');
-    if (current === content) {
-      return null;
-    }
-
-    return {
-      kind: 'write',
-      action: 'UPDATE',
-      filePath,
-      content,
-    };
+  if (fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf8') === content) {
+    return null;
   }
 
   return {
     kind: 'write',
-    action: 'CREATE',
+    action: fs.existsSync(filePath) ? 'UPDATE' : 'CREATE',
     filePath,
     content,
   };
@@ -393,20 +383,10 @@ export function parseArgs(argv) {
       continue;
     }
 
-    if (arg === '--targets') {
-      const value = argv[index + 1];
+    if (arg === '--targets' || arg.startsWith('--targets=')) {
+      const value = arg === '--targets' ? argv[++index] : arg.slice('--targets='.length);
       assert(value, '--targets requires a comma-separated value');
       options.targets = value
-        .split(',')
-        .map((item) => item.trim())
-        .filter(Boolean);
-      index += 1;
-      continue;
-    }
-
-    if (arg.startsWith('--targets=')) {
-      options.targets = arg
-        .slice('--targets='.length)
         .split(',')
         .map((item) => item.trim())
         .filter(Boolean);
