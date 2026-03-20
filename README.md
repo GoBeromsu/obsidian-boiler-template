@@ -33,6 +33,7 @@ This boilerplate template is the source of truth for shared tooling patterns acr
 
 Shared plugin tooling now lives under `tooling/` in this repository:
 - `tooling/shared/` contains the canonical synced `dev.mjs` and `version.mjs` scripts.
+- `tooling/shared/` also contains the canonical release entrypoints: `release.mjs` and `release-notes.mjs`.
 - `tooling/sync/` contains the workflow renderers and sync engine.
 - Each plugin repo declares repo-specific values in `boiler.config.mjs`.
 
@@ -46,12 +47,15 @@ Useful variants:
 
 ```bash
 node scripts/sync-to-plugins.mjs --dry-run
+node scripts/sync-to-plugins.mjs --check
 node scripts/sync-to-plugins.mjs --targets Metadata-Auto-Classifier,obsidian-eagle-plugin,obsidian-smart-connections
 ```
 
 The sync command copies or renders these files into each target repo:
 - `scripts/dev.mjs`
 - `scripts/version.mjs`
+- `scripts/release.mjs`
+- `scripts/release-notes.mjs`
 - `.github/workflows/ci.yml`
 - `.github/workflows/release.yml`
 
@@ -61,6 +65,39 @@ The sync command copies or renders these files into each target repo:
 2. Run `pnpm run dev` to build and sync plugin output into a target vault.
 3. Reload the plugin in Obsidian.
 4. Enable the plugin in Obsidian settings if needed.
+
+## Release Notes Format
+
+GitHub Actions is the canonical publisher for managed repos. Optional release notes live in `releases/<version>.md`.
+
+The supported format is:
+
+```md
+# Release 1.2.3
+
+## Summary
+- Short explanation of the release.
+
+## Added
+- Optional
+
+## Changed
+- Optional
+
+## Fixed
+- Optional
+
+## Breaking
+- Optional
+
+## Migration
+- Optional
+
+## Notes
+- Optional
+```
+
+If the file does not exist, the workflow publishes a deterministic fallback body instead of failing.
 
 ## Release Checklist
 

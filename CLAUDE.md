@@ -15,11 +15,12 @@ pnpm build          # tsc type-check + production esbuild build
 pnpm test           # Vitest unit tests
 pnpm lint           # ESLint
 pnpm lint:fix       # ESLint with auto-fix
-pnpm ci             # build + lint + test
-pnpm release:patch  # lint:fix → patch bump → auto-push tag
-pnpm release:minor  # lint:fix → minor bump → auto-push tag
-pnpm release:major  # lint:fix → major bump → auto-push tag
+pnpm run ci         # build + lint + test
+pnpm release:patch  # ci → patch bump → auto-push tag
+pnpm release:minor  # ci → minor bump → auto-push tag
+pnpm release:major  # ci → major bump → auto-push tag
 pnpm sync:plugins   # propagate template changes to downstream plugins
+pnpm sync:check     # fail if managed repos drift from the template
 ```
 
 ### sync:plugins options
@@ -30,6 +31,7 @@ node scripts/sync-to-plugins.mjs --targets plugin-a,plugin-b        # sync speci
 ```
 
 Synced artifacts: `scripts/dev.mjs`, `scripts/version.mjs`, `.github/workflows/ci.yml`, `.github/workflows/release.yml`.
+Managed release helpers: `scripts/release.mjs`, `scripts/release-notes.mjs`.
 
 ## Role
 
@@ -43,15 +45,15 @@ This repo serves as the canonical template. The workflow is:
 ```
 src/                  # Plugin source (entry: main.ts)
 scripts/              # dev.mjs, version.mjs, sync-to-plugins.mjs
-tooling/shared/       # Canonical dev.mjs & version.mjs (synced to plugins)
+tooling/shared/       # Canonical dev/version/release scripts (synced to plugins)
 tooling/sync/         # Sync engine & workflow renderers
 boiler.config.mjs     # Per-repo config (dev deploy, version staging, CI, release)
 ```
 
 ## Release
 
-1. `pnpm ci` — MUST pass (build + lint + test)
-2. `pnpm release:patch|minor|major` — lint:fix, version bump, auto-push tag (via `postversion`)
+1. `pnpm run ci` — MUST pass (build + lint + test)
+2. `pnpm release:patch|minor|major` — `pnpm run ci`, version bump, auto-push tag (via `postversion`)
 3. GitHub Actions handles CI + Release workflows (`ci.yml`, `release.yml`)
 
 **DENIED by settings.json:** `git tag`, `git push --tags`, `gh release` — only `pnpm release:*` is allowed.

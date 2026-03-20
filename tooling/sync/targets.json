@@ -1,0 +1,10 @@
+{
+  "targets": [
+    "obsidian-boiler-template",
+    "obsidian-eagle-plugin",
+    "Metadata-Auto-Classifier",
+    "obsidian-bible-search",
+    "obsidian-qmd",
+    "obsidian-smart-connections"
+  ]
+}

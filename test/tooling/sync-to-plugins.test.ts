@@ -20,6 +20,41 @@ function writeFile(filePath: string, contents: string): void {
   fs.writeFileSync(filePath, contents);
 }
 
+function writeManagedRepoContract(targetRoot: string): void {
+  writeFile(
+    path.join(targetRoot, 'package.json'),
+    JSON.stringify(
+      {
+        name: path.basename(targetRoot),
+        version: '1.0.0',
+        scripts: {
+          dev: 'node scripts/dev.mjs',
+          build: 'pnpm run dev:build',
+          lint: 'eslint .',
+          test: 'vitest run',
+          ci: 'pnpm run build && pnpm run lint && pnpm run test',
+          prepare: 'husky',
+          version: 'node scripts/version.mjs',
+          postversion: 'git push && git push --tags',
+          'release:patch': 'node scripts/release.mjs patch',
+          'release:minor': 'node scripts/release.mjs minor',
+          'release:major': 'node scripts/release.mjs major',
+        },
+        devDependencies: {
+          husky: '^9.0.0',
+          'lint-staged': '^15.0.0',
+        },
+      },
+      null,
+      2,
+    ) + '\n',
+  );
+  writeFile(
+    path.join(targetRoot, '.npmrc'),
+    ['tag-version-prefix=""', 'message="chore(release): %s"', ''].join('\n'),
+  );
+}
+
 function createTempTarget(name = 'sample-plugin'): string {
   const targetRoot = fs.mkdtempSync(path.join(os.tmpdir(), `sync-target-${name}-`));
   tempDirs.push(targetRoot);
@@ -69,6 +104,7 @@ describe('tooling sync', () => {
     });
 
     expect(withResults).toContain("branches: ['main']");
+    expect(withResults).toContain('run: pnpm run ci');
     expect(withResults).toContain('Publish Test Results');
     expect(withoutResults).not.toContain('Publish Test Results');
   });
@@ -81,23 +117,32 @@ describe('tooling sync', () => {
       },
       release: {
         pluginName: 'open-smart-connections',
-        copyFiles: ['dist/main.js', 'dist/manifest.json', 'dist/styles.css'],
+        copyFiles: [
+          'dist/main.js',
+          'dist/manifest.json',
+          { path: 'dist/styles.css', required: false },
+        ],
         publishFiles: [
           '${{ env.PLUGIN_NAME }}.zip',
           'dist/main.js',
           'dist/manifest.json',
-          'dist/styles.css',
+          { path: 'dist/styles.css', required: false },
         ],
       },
     });
 
     expect(workflow).toContain('PLUGIN_NAME: open-smart-connections');
-    expect(workflow).toContain('cp dist/main.js dist/manifest.json dist/styles.css ${{ env.PLUGIN_NAME }}');
-    expect(workflow).toContain('dist/styles.css');
+    expect(workflow).toContain('run: pnpm run ci');
+    expect(workflow).toContain('body_path: .github-release-body.md');
+    expect(workflow).toContain('node scripts/release-notes.mjs --output .github-release-body.md');
+    expect(workflow).toContain('copy_asset "dist/styles.css" "false"');
+    expect(workflow).toContain('publish_asset "dist/styles.css" "false"');
+    expect(workflow.indexOf('Install pnpm')).toBeLessThan(workflow.indexOf('actions/setup-node@v4'));
   });
 
   it('reports missing required config keys', async () => {
     const targetRoot = createTempTarget('missing-release');
+    writeManagedRepoContract(targetRoot);
     writeFile(
       path.join(targetRoot, 'boiler.config.mjs'),
       [
@@ -115,6 +160,7 @@ describe('tooling sync', () => {
 
   it('supports dry-run without writing files', async () => {
     const targetRoot = createTempTarget('dry-run');
+    writeManagedRepoContract(targetRoot);
     writeFile(
       path.join(targetRoot, 'boiler.config.mjs'),
       [
@@ -155,6 +201,7 @@ describe('tooling sync', () => {
 
   it('writes synced files and removes legacy dev config', async () => {
     const targetRoot = createTempTarget('write-target');
+    writeManagedRepoContract(targetRoot);
     writeFile(
       path.join(targetRoot, 'boiler.config.mjs'),
       [
@@ -204,8 +251,20 @@ describe('tooling sync', () => {
     expect(fs.readFileSync(path.join(targetRoot, '.github', 'workflows', 'ci.yml'), 'utf8')).toContain(
       'Publish Test Results',
     );
+    expect(fs.readFileSync(path.join(targetRoot, '.github', 'workflows', 'ci.yml'), 'utf8')).toContain(
+      'run: pnpm run ci',
+    );
+    expect(
+      fs.readFileSync(path.join(targetRoot, '.github', 'workflows', 'release.yml'), 'utf8'),
+    ).toContain('body_path: .github-release-body.md');
     expect(
       fs.readFileSync(path.join(targetRoot, '.github', 'workflows', 'release.yml'), 'utf8'),
     ).toContain('write-target-plugin');
+    expect(fs.readFileSync(path.join(targetRoot, 'scripts', 'release.mjs'), 'utf8')).toBe(
+      fs.readFileSync(path.join(templateRoot, 'tooling', 'shared', 'release.mjs'), 'utf8'),
+    );
+    expect(fs.readFileSync(path.join(targetRoot, 'scripts', 'release-notes.mjs'), 'utf8')).toBe(
+      fs.readFileSync(path.join(templateRoot, 'tooling', 'shared', 'release-notes.mjs'), 'utf8'),
+    );
   });
 });
