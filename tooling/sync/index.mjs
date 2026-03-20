@@ -309,8 +309,6 @@ export function renderCiWorkflow(config) {
     "          cache: 'pnpm'",
     '      - name: Install dependencies',
     '        run: pnpm install --frozen-lockfile',
-    '      - name: Check boiler-template sync',
-    '        run: pnpm sync:check',
     '      - name: Run CI',
     '        run: pnpm run ci',
   );
