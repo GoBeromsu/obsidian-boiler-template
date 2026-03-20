@@ -11,6 +11,12 @@
     "importHelpers": true,
     "isolatedModules": true,
     "strictNullChecks": true,
+    "paths": {
+      "@domain/*": ["domain/*"],
+      "@ui/*": ["ui/*"],
+      "@utils/*": ["utils/*"],
+      "@shared/*": ["shared/*"]
+    },
     "lib": [
       "DOM",
       "ES5",

@@ -69,10 +69,6 @@ const SHARED_FILE_SPECS = [
     destination: ['src', 'shared', 'plugin-logger.ts'],
   },
   {
-    source: ['tooling', 'shared', 'src-shared', 'debounce-controller.ts'],
-    destination: ['src', 'shared', 'debounce-controller.ts'],
-  },
-  {
     source: ['tooling', 'shared', 'src-shared', 'settings-migration.ts'],
     destination: ['src', 'shared', 'settings-migration.ts'],
   },
@@ -81,6 +77,8 @@ const SHARED_FILE_SPECS = [
     destination: ['src', 'shared', 'styles.base.css'],
   },
 ];
+
+const SCAFFOLD_FOLDERS = ['domain', 'ui', 'types', 'utils'].map((name) => ['src', name]);
 
 const GENERATED_FILE_SPECS = [
   {
@@ -530,6 +528,16 @@ export async function buildSyncPlan({ templateRoot, targetRoot }) {
   const operations = [];
 
   const skipDestinations = config.sync?.skipDestinations ?? [];
+
+  for (const segments of SCAFFOLD_FOLDERS) {
+    const folderPath = path.join(targetRoot, ...segments);
+    if (!fs.existsSync(folderPath)) {
+      const operation = createWriteOperation(path.join(folderPath, '.gitkeep'), '');
+      if (operation) {
+        operations.push(operation);
+      }
+    }
+  }
 
   for (const spec of SHARED_FILE_SPECS) {
     if (skipDestinations.some((skip) => pathSegmentsEqual(skip, spec.destination))) {
