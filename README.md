@@ -1,76 +1,101 @@
 # Obsidian Plugin Boilerplate
 
-This boilerplate template is the source of truth for shared tooling patterns across the sibling Obsidian plugin repositories in this workspace.
+Source-of-truth seed template for Obsidian plugin development. New patterns are proven here first, then propagated to all downstream plugins via the built-in sync engine.
 
-## Getting Started
+## Features
 
-1. Fork this repository:
-   Visit `https://github.com/GoBeromsu/obsidian-boiler-template` and create a fork in your account.
+- **Unified dev workflow** -- vault selection + esbuild watch + hot reload across all plugins
+- **Version management** -- automated version bumping for `package.json`, `manifest.json`, and `versions.json`
+- **Release pipeline** -- CI + GitHub Actions release workflows, generated from templates
+- **Sync engine** -- propagate shared scripts and workflows to downstream plugin repos
+- **Drift detection** -- check whether managed repos have diverged from the template
+
+## Quick Start
+
+### Fork and Clone
+
+1. Fork this repository at `https://github.com/GoBeromsu/obsidian-boiler-template`
 2. Clone your fork:
 
-   ```bash
-   git clone https://github.com/your-username/obsidian-boiler-template.git
-   ```
+```bash
+git clone https://github.com/your-username/obsidian-boiler-template.git
+cd obsidian-boiler-template
+pnpm install
+```
 
 3. Update personal details before publishing:
    - `LICENSE`
-   - `package.json`
-   - `manifest.json`
-4. Install dependencies:
+   - `package.json` (name, author, description)
+   - `manifest.json` (id, name, author, description)
 
-   ```bash
-   cd your-plugin-name
-   pnpm install
-   ```
-
-5. Start development:
-
-   ```bash
-   pnpm run dev
-   ```
-
-## Shared Tooling Workflow
-
-Shared plugin tooling now lives under `tooling/` in this repository:
-- `tooling/shared/` contains the canonical synced `dev.mjs` and `version.mjs` scripts.
-- `tooling/shared/` also contains the canonical release entrypoints: `release.mjs` and `release-notes.mjs`.
-- `tooling/sync/` contains the workflow renderers and sync engine.
-- Each plugin repo declares repo-specific values in `boiler.config.mjs`.
-
-To propagate shared tooling changes from this template to the configured plugin repos:
+4. Start development:
 
 ```bash
-pnpm run sync:plugins
+pnpm dev
 ```
 
-Useful variants:
+## Synced Artifacts
+
+The sync engine copies or renders these files into each target plugin repo:
+
+| File | Description |
+|------|-------------|
+| `scripts/dev.mjs` | Dev orchestrator (vault discovery + esbuild watch) |
+| `scripts/version.mjs` | Version bump script |
+| `scripts/release.mjs` | Release entrypoint |
+| `scripts/release-notes.mjs` | Release notes reader |
+| `.github/workflows/ci.yml` | CI workflow (rendered from template) |
+| `.github/workflows/release.yml` | Release workflow (rendered from template) |
+
+### Running the Sync
 
 ```bash
-node scripts/sync-to-plugins.mjs --dry-run
-node scripts/sync-to-plugins.mjs --check
-node scripts/sync-to-plugins.mjs --targets Metadata-Auto-Classifier,obsidian-eagle-plugin,obsidian-smart-connections
+pnpm sync:plugins                                             # sync all targets
+pnpm sync:check                                               # fail if any repo has drifted
+node scripts/sync-to-plugins.mjs --dry-run                    # preview without writing
+node scripts/sync-to-plugins.mjs --targets plugin-a,plugin-b  # sync specific targets
 ```
-
-The sync command copies or renders these files into each target repo:
-- `scripts/dev.mjs`
-- `scripts/version.mjs`
-- `scripts/release.mjs`
-- `scripts/release-notes.mjs`
-- `.github/workflows/ci.yml`
-- `.github/workflows/release.yml`
 
 ## Plugin Development Workflow
 
-1. Make changes in `src/`.
-2. Run `pnpm run dev` to build and sync plugin output into a target vault.
-3. Reload the plugin in Obsidian.
-4. Enable the plugin in Obsidian settings if needed.
+1. Make changes in `src/`
+2. Run `pnpm dev` to build and sync plugin output into a target vault
+3. Reload the plugin in Obsidian
+4. Enable the plugin in Obsidian settings if needed
+
+## Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Platform | Obsidian Plugin API |
+| Language | TypeScript 5 |
+| Bundler | esbuild |
+| Testing | Vitest |
+| Linting | ESLint + Husky + lint-staged + commitlint |
+| Sync | Custom Node.js sync engine |
+
+## Project Structure
+
+```
+obsidian-boiler-template/
+├── src/
+│   ├── main.ts               # Plugin source (entry point)
+│   └── shared/               # Shared utilities (plugin-logger, plugin-notices)
+├── scripts/
+│   ├── dev.mjs               # Dev orchestrator
+│   ├── version.mjs           # Version bump
+│   ├── release.mjs           # Release entrypoint
+│   └── sync-to-plugins.mjs   # Sync engine CLI
+├── tooling/
+│   ├── shared/               # Canonical scripts (synced to downstream plugins)
+│   └── sync/                 # Sync engine + workflow renderers
+├── boiler.config.mjs         # Per-repo config (dev, version, CI, release)
+└── manifest.json             # Obsidian plugin manifest
+```
 
 ## Release Notes Format
 
-GitHub Actions is the canonical publisher for managed repos. Optional release notes live in `releases/<version>.md`.
-
-The supported format is:
+GitHub Actions is the canonical publisher. Optional release notes live in `releases/<version>.md`:
 
 ```md
 # Release 1.2.3
@@ -86,24 +111,28 @@ The supported format is:
 
 ## Fixed
 - Optional
-
-## Breaking
-- Optional
-
-## Migration
-- Optional
-
-## Notes
-- Optional
 ```
 
-If the file does not exist, the workflow publishes a deterministic fallback body instead of failing.
+If the file does not exist, the workflow publishes a deterministic fallback body.
+
+## Development
+
+```bash
+pnpm install
+pnpm dev            # vault selection + esbuild watch + hot reload
+pnpm build          # tsc type-check + production build
+pnpm test           # Vitest unit tests
+pnpm lint           # ESLint
+pnpm run ci         # build + lint + test
+pnpm sync:plugins   # propagate changes to downstream plugins
+pnpm sync:check     # verify no drift in managed repos
+```
 
 ## Release Checklist
 
-1. Publish an initial version.
-2. Ensure the repo root contains a `README.md`.
-3. Submit a pull request to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases).
+1. Publish an initial version
+2. Ensure the repo root contains a `README.md`
+3. Submit a pull request to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases)
 
 ## License
 

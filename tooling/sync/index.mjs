@@ -289,7 +289,7 @@ export function renderCiWorkflow(config) {
   ];
 
   if (testResultsFile) {
-    lines.push('', 'permissions:', '  checks: write', '  pull-requests: write');
+    lines.push('', 'permissions:', '  contents: read', '  checks: write', '  pull-requests: write');
   }
 
   lines.push(
