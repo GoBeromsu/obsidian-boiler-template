@@ -128,6 +128,23 @@ pnpm sync:plugins   # propagate changes to downstream plugins
 pnpm sync:check     # verify no drift in managed repos
 ```
 
+## Pre-Community-Submission Checklist
+
+Before submitting to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases), run:
+
+```bash
+pnpm lint   # includes eslint-plugin-obsidianmd rules
+```
+
+Key ObsidianReviewBot rules enforced automatically:
+
+- **No plugin name in command name** — `obsidianmd/commands/no-plugin-name-in-command-name`: Obsidian prepends the plugin name; don't repeat it.
+- **No plugin ID in command ID** — `obsidianmd/commands/no-plugin-id-in-command-id`: command IDs must not contain the plugin ID as a prefix.
+- **No "command" in command name** — `obsidianmd/commands/no-command-in-command-name`: redundant word in palette entries.
+- **Sentence case UI text** — `obsidianmd/ui/sentence-case`: all user-facing strings must use sentence case (e.g. `'Open note'` not `'Open Note'`).
+- **No manual HTML headings in settings** — `obsidianmd/settings-tab/no-manual-html-headings`: use `Setting.setHeading()` instead of raw `<h2>`/`<h3>`.
+- **No hardcoded config path** — `obsidianmd/hardcoded-config-path`: never hardcode `.obsidian/` paths; use `app.vault.configDir`.
+
 ## Release Checklist
 
 1. Publish an initial version
