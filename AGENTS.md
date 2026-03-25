@@ -29,10 +29,10 @@ Source-of-truth seed template for all downstream Obsidian plugins in this monore
 
 | Directory | Purpose |
 |-----------|---------|
-| `src/` | Template plugin source (same 4-layer structure as all plugins) |
-| `src/shared/` | Files synced verbatim to all downstream plugins |
-| `tooling/shared/` | Dev/release/lint tooling synced to all downstream plugins |
-| `tooling/sync/` | Sync engine internals (targets.json, index.mjs) |
+| `src/` | Template plugin source — same 4-layer structure (see `src/AGENTS.md`) |
+| `src/shared/` | Files synced verbatim to downstream plugins (see `src/shared/AGENTS.md`) |
+| `tooling/shared/` | Dev/release/lint tooling synced to all downstream plugins (see `tooling/shared/AGENTS.md`) |
+| `tooling/sync/` | Sync engine internals (see `tooling/sync/AGENTS.md`) |
 | `scripts/` | Local-only scripts (not synced) |
 
 ## For AI Agents
