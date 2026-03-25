@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"pnpm test 2>&1\",\"description\":\"Run tests to verify new tests pass\"}",
+  "error": "Exit code 1\n\n> obsidian-sample-plugin@1.0.1 test /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-boiler-template\n> vitest run\n\n\n RUN  v2.1.9 /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-boiler-template\n\n ❯ test/shared/plugin-logger.test.ts (4 tests | 1 failed) 6ms\n   × PluginLogger > error() > stringifies non-Error values with String() — not [object Object] 4ms\n     → expected '[test] error | oops | [object Object]' not to contain '[object Object]'\n ✓ test/tooling/sync-to-plugins....",
+  "timestamp": "2026-03-25T11:15:42.270Z",
+  "retry_count": 1
+}

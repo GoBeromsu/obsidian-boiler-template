@@ -15,7 +15,7 @@ export class PluginLogger {
 	}
 
 	info(message: string, data?: Record<string, unknown>): void {
-		console.info(this.format('info', message, data));
+		console.debug(this.format('info', message, data));
 	}
 
 	warn(message: string, data?: Record<string, unknown>): void {
@@ -26,8 +26,8 @@ export class PluginLogger {
 		let suffix = '';
 		if (error instanceof Error) {
 			suffix = ` | ${error.message}`;
-		} else if (error) {
-			suffix = ` | ${String(error)}`;
+		} else if (error !== undefined && error !== null) {
+			suffix = ` | ${typeof error === 'object' ? JSON.stringify(error) : String(error)}`;
 		}
 		console.error(`[${this.prefix}] error | ${message}${suffix}`);
 	}
