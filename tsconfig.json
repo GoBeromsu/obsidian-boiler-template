@@ -16,6 +16,7 @@
     "allowSyntheticDefaultImports": true,
     "useUnknownInCatchVariables": true,
     "strictBindCallApply": true,
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "@domain/*": ["domain/*"],
       "@ui/*": ["ui/*"],
