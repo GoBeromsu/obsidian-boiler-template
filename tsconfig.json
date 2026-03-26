@@ -11,6 +11,11 @@
     "importHelpers": true,
     "isolatedModules": true,
     "strictNullChecks": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": true,
+    "strictBindCallApply": true,
     "paths": {
       "@domain/*": ["domain/*"],
       "@ui/*": ["ui/*"],
@@ -25,6 +30,8 @@
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "tooling/shared/src-shared/**/*.ts"
   ]
 }

@@ -189,7 +189,7 @@ describe('tooling sync', () => {
     const logs: string[] = [];
     await applySyncPlan(plan, {
       dryRun: true,
-      onLog: (line) => logs.push(line),
+      onLog: (line: string) => logs.push(line),
     });
 
     expect(fs.readFileSync(path.join(targetRoot, 'scripts', 'dev.mjs'), 'utf8')).toBe(
