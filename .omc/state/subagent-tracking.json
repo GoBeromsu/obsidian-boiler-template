@@ -1,0 +1,60 @@
+{
+  "agents": [
+    {
+      "agent_id": "a1e8e8c6e8825a853",
+      "agent_type": "obsidian-developer",
+      "started_at": "2026-03-26T14:14:43.135Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T14:15:35.574Z",
+      "duration_ms": 52439
+    },
+    {
+      "agent_id": "aefdf979ef220843c",
+      "agent_type": "obsidian-developer",
+      "started_at": "2026-03-26T14:14:51.933Z",
+      "parent_mode": "none",
+      "status": "running"
+    },
+    {
+      "agent_id": "a91d1ab8d76ff376a",
+      "agent_type": "obsidian-developer",
+      "started_at": "2026-03-26T14:15:00.338Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T14:17:06.295Z",
+      "duration_ms": 125957
+    },
+    {
+      "agent_id": "ad46cf2fb88c2fdef",
+      "agent_type": "obsidian-developer",
+      "started_at": "2026-03-26T14:15:08.439Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T14:17:45.712Z",
+      "duration_ms": 157273
+    },
+    {
+      "agent_id": "a7eef2ec0931fef2a",
+      "agent_type": "obsidian-developer",
+      "started_at": "2026-03-26T14:15:14.128Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T14:15:53.698Z",
+      "duration_ms": 39570
+    },
+    {
+      "agent_id": "a52ffb1c09ded8118",
+      "agent_type": "obsidian-developer",
+      "started_at": "2026-03-26T14:15:23.003Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-26T14:17:00.309Z",
+      "duration_ms": 97306
+    }
+  ],
+  "total_spawned": 6,
+  "total_completed": 5,
+  "total_failed": 0,
+  "last_updated": "2026-03-26T14:17:45.815Z"
+}

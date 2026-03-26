@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"pnpm test 2>&1\",\"description\":\"Run tests to verify new tests pass\"}",
-  "error": "Exit code 1\n\n> obsidian-sample-plugin@1.0.1 test /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-boiler-template\n> vitest run\n\n\n RUN  v2.1.9 /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-boiler-template\n\n ❯ test/shared/plugin-logger.test.ts (4 tests | 1 failed) 6ms\n   × PluginLogger > error() > stringifies non-Error values with String() — not [object Object] 4ms\n     → expected '[test] error | oops | [object Object]' not to contain '[object Object]'\n ✓ test/tooling/sync-to-plugins....",
-  "timestamp": "2026-03-25T11:15:42.270Z",
-  "retry_count": 1
+  "tool_input_preview": "{\"command\":\"cd /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-eagle-plugin && pnpm lint 2>&1\",\"description\":\"Run lint to check remaining errors\"}",
+  "error": "Exit code 1\n\n> obsidian-eagle-plugin@2.8.8 lint /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-eagle-plugin\n> eslint .\n\n\n/Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-eagle-plugin/src/types/obsidian.d.ts\n   5:42  error  'NodeJS' is not defined          no-undef\n   5:80  error  'Buffer' is not defined          no-undef\n   6:33  error  'Buffer' is not defined          no-undef\n   6:57  error  'NodeJS' is not defined          no-undef\n   7:40  error  'NodeJS' is not defined          ...",
+  "timestamp": "2026-03-26T14:24:19.847Z",
+  "retry_count": 4
 }

@@ -4,7 +4,7 @@ import obsidianmd from 'eslint-plugin-obsidianmd'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
+// eslint-disable-next-line @typescript-eslint/no-deprecated -- defineConfig doesn't flatten obsidianmd array spread
 export const baseConfig = tseslint.config(
 	// Enable type-checked rules.
 	// projectService discovers tsconfig.json in tsconfigRootDir (plugin root after sync).
@@ -23,6 +23,9 @@ export const baseConfig = tseslint.config(
 						'*.config.ts',
 						'*.config.mts',
 						'*.config.mjs',
+						'*.mjs',
+						'scripts/*.mjs',
+						'tooling/shared/*.mjs',
 						'eslint.base.js',
 						'tooling/shared/eslint.base.js',
 						'manifest.json',
@@ -60,9 +63,26 @@ export const baseConfig = tseslint.config(
 			}],
 		},
 	},
+	// Worker files: run in Web Worker / Node-like context, need node globals (Buffer, process).
+	{
+		files: ['worker/**/*.ts'],
+		languageOptions: {
+			globals: { ...globals.node },
+		},
+	},
 	// Config files: legitimately import Node.js built-in modules.
 	{
 		files: ['*.config.ts', '*.config.mts', '*.config.js', '*.config.mjs'],
+		rules: {
+			'import/no-nodejs-modules': 'off',
+		},
+	},
+	// Script files (.mjs): run in Node.js, need node globals.
+	{
+		files: ['scripts/**/*.mjs', 'tooling/**/*.mjs', '*.mjs'],
+		languageOptions: {
+			globals: { ...globals.node },
+		},
 		rules: {
 			'import/no-nodejs-modules': 'off',
 		},
