@@ -1,3 +1,5 @@
+/* eslint-disable obsidianmd/sample-names -- boiler-template uses intentional placeholder names that downstream plugins rename */
+/* eslint-disable obsidianmd/commands/no-command-in-command-id -- boiler-template command IDs are sample placeholders */
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 // Remember to rename these classes and interfaces!
@@ -84,6 +86,7 @@ export default class MyPlugin extends Plugin {
 	}
 
 	async loadSettings() {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- loadData() returns unknown-shaped JSON
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 

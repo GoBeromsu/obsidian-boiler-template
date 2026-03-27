@@ -25,8 +25,8 @@ const SHARED_FILE_SPECS = [
     destination: ['.editorconfig'],
   },
   {
-    source: ['tooling', 'shared', 'eslint.base.js'],
-    destination: ['eslint.base.js'],
+    source: ['tooling', 'shared', 'eslint.config.mts'],
+    destination: ['eslint.config.mts'],
   },
   {
     source: ['tooling', 'shared', 'commitlint.config.mjs'],
@@ -91,7 +91,12 @@ const GENERATED_FILE_SPECS = [
   },
 ];
 
-const LEGACY_FILE_SPECS = [['scripts', 'dev.config.mjs']];
+const LEGACY_FILE_SPECS = [
+  ['scripts', 'dev.config.mjs'],
+  ['eslint.base.js'],
+  ['eslint.config.js'],
+  ['eslint.config.mjs'],
+];
 const TARGETS_FILE = ['tooling', 'sync', 'targets.json'];
 const REQUIRED_SCRIPT_NAMES = [
   'dev',

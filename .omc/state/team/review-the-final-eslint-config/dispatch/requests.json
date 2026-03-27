@@ -1,0 +1,20 @@
+[
+  {
+    "request_id": "ce623c49-7207-4473-bf53-bd2388e46ad3",
+    "kind": "inbox",
+    "team_name": "review-the-final-eslint-config",
+    "to_worker": "worker-1",
+    "worker_index": 1,
+    "pane_id": "%2",
+    "trigger_message": "Read .omc/state/team/review-the-final-eslint-config/workers/worker-1/inbox.md, start work now, report concrete progress (not ACK-only), and keep executing your assigned or next feasible work.",
+    "inbox_correlation_key": "startup:worker-1:1",
+    "transport_preference": "prompt_stdin",
+    "fallback_allowed": false,
+    "status": "notified",
+    "attempt_count": 1,
+    "created_at": "2026-03-27T00:05:41.203Z",
+    "updated_at": "2026-03-27T00:05:41.206Z",
+    "notified_at": "2026-03-27T00:05:41.206Z",
+    "last_reason": "prompt_mode_launch_args"
+  }
+]

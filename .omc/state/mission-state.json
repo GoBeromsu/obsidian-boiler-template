@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-26T14:17:45.712Z",
+  "updatedAt": "2026-03-27T00:08:02.617Z",
   "missions": [
     {
       "id": "session:92784c4a-882b-4533-b3ae-759adc60899c:none",
@@ -7,15 +7,15 @@
       "name": "none",
       "objective": "Session mission",
       "createdAt": "2026-03-26T14:14:43.135Z",
-      "updatedAt": "2026-03-26T14:17:45.712Z",
+      "updatedAt": "2026-03-26T14:31:34.326Z",
       "status": "running",
-      "workerCount": 6,
+      "workerCount": 7,
       "taskCounts": {
-        "total": 6,
+        "total": 7,
         "pending": 0,
         "blocked": 0,
         "inProgress": 1,
-        "completed": 5,
+        "completed": 6,
         "failed": 0
       },
       "agents": [
@@ -78,65 +78,19 @@
           "latestUpdate": "completed",
           "completedSummary": null,
           "updatedAt": "2026-03-26T14:17:00.309Z"
+        },
+        {
+          "name": "architect:af733f5",
+          "role": "architect",
+          "ownership": "af733f5360e51ef65",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T14:31:34.326Z"
         }
       ],
       "timeline": [
-        {
-          "id": "session-start:ad46cf2fb88c2fdef:2026-03-26T14:15:08.439Z",
-          "at": "2026-03-26T14:15:08.439Z",
-          "kind": "update",
-          "agent": "obsidian-developer:ad46cf2",
-          "detail": "started obsidian-developer:ad46cf2",
-          "sourceKey": "session-start:ad46cf2fb88c2fdef"
-        },
-        {
-          "id": "session-start:a7eef2ec0931fef2a:2026-03-26T14:15:14.128Z",
-          "at": "2026-03-26T14:15:14.128Z",
-          "kind": "update",
-          "agent": "obsidian-developer:a7eef2e",
-          "detail": "started obsidian-developer:a7eef2e",
-          "sourceKey": "session-start:a7eef2ec0931fef2a"
-        },
-        {
-          "id": "session-start:a52ffb1c09ded8118:2026-03-26T14:15:23.003Z",
-          "at": "2026-03-26T14:15:23.003Z",
-          "kind": "update",
-          "agent": "obsidian-developer:a52ffb1",
-          "detail": "started obsidian-developer:a52ffb1",
-          "sourceKey": "session-start:a52ffb1c09ded8118"
-        },
-        {
-          "id": "session-stop:a1e8e8c6e8825a853:2026-03-26T14:15:35.574Z",
-          "at": "2026-03-26T14:15:35.574Z",
-          "kind": "completion",
-          "agent": "obsidian-developer:a1e8e8c",
-          "detail": "completed",
-          "sourceKey": "session-stop:a1e8e8c6e8825a853"
-        },
-        {
-          "id": "session-stop:a12b945deab68978b:2026-03-26T14:15:45.280Z",
-          "at": "2026-03-26T14:15:45.280Z",
-          "kind": "completion",
-          "agent": "obsidian-developer:a1e8e8c",
-          "detail": "completed",
-          "sourceKey": "session-stop:a12b945deab68978b"
-        },
-        {
-          "id": "session-stop:a7eef2ec0931fef2a:2026-03-26T14:15:53.698Z",
-          "at": "2026-03-26T14:15:53.698Z",
-          "kind": "completion",
-          "agent": "obsidian-developer:a7eef2e",
-          "detail": "completed",
-          "sourceKey": "session-stop:a7eef2ec0931fef2a"
-        },
-        {
-          "id": "session-stop:a52ffb1c09ded8118:2026-03-26T14:17:00.309Z",
-          "at": "2026-03-26T14:17:00.309Z",
-          "kind": "completion",
-          "agent": "obsidian-developer:a52ffb1",
-          "detail": "completed",
-          "sourceKey": "session-stop:a52ffb1c09ded8118"
-        },
         {
           "id": "session-stop:a91d1ab8d76ff376a:2026-03-26T14:17:06.295Z",
           "at": "2026-03-26T14:17:06.295Z",
@@ -152,6 +106,146 @@
           "agent": "obsidian-developer:ad46cf2",
           "detail": "completed",
           "sourceKey": "session-stop:ad46cf2fb88c2fdef"
+        },
+        {
+          "id": "session-start:af733f5360e51ef65:2026-03-26T14:28:48.032Z",
+          "at": "2026-03-26T14:28:48.032Z",
+          "kind": "update",
+          "agent": "architect:af733f5",
+          "detail": "started architect:af733f5",
+          "sourceKey": "session-start:af733f5360e51ef65"
+        },
+        {
+          "id": "session-stop:af733f5360e51ef65:2026-03-26T14:31:34.326Z",
+          "at": "2026-03-26T14:31:34.326Z",
+          "kind": "completion",
+          "agent": "architect:af733f5",
+          "detail": "completed",
+          "sourceKey": "session-stop:af733f5360e51ef65"
+        }
+      ]
+    },
+    {
+      "id": "session:6056d581-cb25-4108-a289-0d1536b1a260:none",
+      "source": "session",
+      "name": "none",
+      "objective": "Session mission",
+      "createdAt": "2026-03-26T17:41:57.808Z",
+      "updatedAt": "2026-03-27T00:08:02.617Z",
+      "status": "done",
+      "workerCount": 7,
+      "taskCounts": {
+        "total": 7,
+        "pending": 0,
+        "blocked": 0,
+        "inProgress": 0,
+        "completed": 7,
+        "failed": 0
+      },
+      "agents": [
+        {
+          "name": "obsidian-developer:ac36f7a",
+          "role": "obsidian-developer",
+          "ownership": "ac36f7ae02dc42d79",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T18:09:54.954Z"
+        },
+        {
+          "name": "obsidian-developer:af7ee35",
+          "role": "obsidian-developer",
+          "ownership": "af7ee355e50bff222",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T17:43:07.230Z"
+        },
+        {
+          "name": "obsidian-developer:aa4805f",
+          "role": "obsidian-developer",
+          "ownership": "aa4805f613ae17868",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T17:43:12.653Z"
+        },
+        {
+          "name": "obsidian-developer:ab0f9fc",
+          "role": "obsidian-developer",
+          "ownership": "ab0f9fcda8157ad2f",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T18:12:42.700Z"
+        },
+        {
+          "name": "obsidian-developer:aaf4d2a",
+          "role": "obsidian-developer",
+          "ownership": "aaf4d2a4e9eec312c",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-26T17:55:18.825Z"
+        },
+        {
+          "name": "obsidian-developer:a1020cc",
+          "role": "obsidian-developer",
+          "ownership": "a1020cc7672eef01c",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-27T00:04:33.979Z"
+        },
+        {
+          "name": "git-master:a7806a2",
+          "role": "git-master",
+          "ownership": "a7806a2d3cb0b37f8",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-03-27T00:08:02.617Z"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "session-start:a1020cc7672eef01c:2026-03-27T00:02:59.806Z",
+          "at": "2026-03-27T00:02:59.806Z",
+          "kind": "update",
+          "agent": "obsidian-developer:a1020cc",
+          "detail": "started obsidian-developer:a1020cc",
+          "sourceKey": "session-start:a1020cc7672eef01c"
+        },
+        {
+          "id": "session-stop:a1020cc7672eef01c:2026-03-27T00:04:33.979Z",
+          "at": "2026-03-27T00:04:33.979Z",
+          "kind": "completion",
+          "agent": "obsidian-developer:a1020cc",
+          "detail": "completed",
+          "sourceKey": "session-stop:a1020cc7672eef01c"
+        },
+        {
+          "id": "session-start:a7806a2d3cb0b37f8:2026-03-27T00:06:11.678Z",
+          "at": "2026-03-27T00:06:11.678Z",
+          "kind": "update",
+          "agent": "git-master:a7806a2",
+          "detail": "started git-master:a7806a2",
+          "sourceKey": "session-start:a7806a2d3cb0b37f8"
+        },
+        {
+          "id": "session-stop:a7806a2d3cb0b37f8:2026-03-27T00:08:02.617Z",
+          "at": "2026-03-27T00:08:02.617Z",
+          "kind": "completion",
+          "agent": "git-master:a7806a2",
+          "detail": "completed",
+          "sourceKey": "session-stop:a7806a2d3cb0b37f8"
         }
       ]
     }

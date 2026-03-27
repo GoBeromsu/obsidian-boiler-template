@@ -1,0 +1,3 @@
+{"event_id":"300f5653-1dbe-478d-9cbe-f5fff9135787","team":"review-the-final-eslint-config","created_at":"2026-03-27T00:05:41.712Z","type":"team_leader_nudge","worker":"leader-fixed","reason":"startup_manual_intervention_required:worker-1:codex_startup_evidence_missing"}
+{"event_id":"9e53853e-2d6e-4ca5-840c-88177555a1cb","team":"review-the-final-eslint-config","created_at":"2026-03-27T00:05:41.714Z","type":"team_leader_nudge","worker":"leader-fixed","reason":"start_team_v2: workers=1 tasks=1 panes=1"}
+{"event_id":"30a800ae-1f10-4fa4-bf95-a6f583b3650c","team":"review-the-final-eslint-config","created_at":"2026-03-27T00:10:30.156Z","type":"task_completed","worker":"worker-1","task_id":"1","message_id":null}

@@ -144,14 +144,26 @@
   "hotPaths": [
     {
       "path": "tooling/shared/eslint.base.js",
-      "accessCount": 8,
-      "lastAccessed": 1774534448657,
+      "accessCount": 9,
+      "lastAccessed": 1774535332285,
+      "type": "file"
+    },
+    {
+      "path": "tooling/shared/src-shared/plugin-logger.ts",
+      "accessCount": 7,
+      "lastAccessed": 1774570389630,
       "type": "file"
     },
     {
       "path": "src/main.ts",
       "accessCount": 5,
       "lastAccessed": 1774526685652,
+      "type": "file"
+    },
+    {
+      "path": "tooling/shared/eslint.config.mts",
+      "accessCount": 4,
+      "lastAccessed": 1774548800513,
       "type": "file"
     },
     {
@@ -176,12 +188,6 @@
       "path": "tooling/sync/index.mjs",
       "accessCount": 2,
       "lastAccessed": 1774526760078,
-      "type": "file"
-    },
-    {
-      "path": "tooling/shared/src-shared/plugin-logger.ts",
-      "accessCount": 1,
-      "lastAccessed": 1774526558211,
       "type": "file"
     },
     {

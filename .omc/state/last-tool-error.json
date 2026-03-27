@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-eagle-plugin && pnpm lint 2>&1\",\"description\":\"Run lint to check remaining errors\"}",
-  "error": "Exit code 1\n\n> obsidian-eagle-plugin@2.8.8 lint /Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-eagle-plugin\n> eslint .\n\n\n/Users/beomsu/Documents/Dev/Obsidian-Plugins/obsidian-eagle-plugin/src/types/obsidian.d.ts\n   5:42  error  'NodeJS' is not defined          no-undef\n   5:80  error  'Buffer' is not defined          no-undef\n   6:33  error  'Buffer' is not defined          no-undef\n   6:57  error  'NodeJS' is not defined          no-undef\n   7:40  error  'NodeJS' is not defined          ...",
-  "timestamp": "2026-03-26T14:24:19.847Z",
-  "retry_count": 4
+  "tool_input_preview": "{\"command\":\"cd /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections && pnpm run ci 2>&1\",\"timeout\":120000,\"description\":\"Run CI (build + lint + test)\"}",
+  "error": "Exit code 1\n\n> open-connections@3.9.27 ci /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections\n> pnpm run build && pnpm run lint && pnpm run test\n\n\n> open-connections@3.9.27 build /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections\n> node esbuild.js\n\n\n  dist/main.js  311.3kb\n\n⚡ Done in 14ms\nBuild complete\n\n> open-connections@3.9.27 lint /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections\n> eslint src\n\n\n/Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections/src...",
+  "timestamp": "2026-03-27T00:03:24.259Z",
+  "retry_count": 1
 }
