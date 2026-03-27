@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections && pnpm run ci 2>&1\",\"timeout\":120000,\"description\":\"Run CI (build + lint + test)\"}",
-  "error": "Exit code 1\n\n> open-connections@3.9.27 ci /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections\n> pnpm run build && pnpm run lint && pnpm run test\n\n\n> open-connections@3.9.27 build /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections\n> node esbuild.js\n\n\n  dist/main.js  311.3kb\n\n⚡ Done in 14ms\nBuild complete\n\n> open-connections@3.9.27 lint /Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections\n> eslint src\n\n\n/Users/beomsu/Documents/Dev/Obsidian-Plugins/open-connections/src...",
-  "timestamp": "2026-03-27T00:03:24.259Z",
-  "retry_count": 1
-}
