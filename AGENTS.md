@@ -30,8 +30,8 @@ Source-of-truth seed template for all downstream Obsidian plugins in this monore
 | Directory | Purpose |
 |-----------|---------|
 | `src/` | Template plugin source — same 4-layer structure (see `src/AGENTS.md`) |
-| `src/shared/` | Files synced verbatim to downstream plugins (see `src/shared/AGENTS.md`) |
-| `tooling/shared/` | Dev/release/lint tooling synced to all downstream plugins (see `tooling/shared/AGENTS.md`) |
+| `src/shared/` | Legacy implementation helpers retained for opt-in migration only |
+| `tooling/shared/` | Dev/release/lint/contracts shared to downstream plugins (see `tooling/shared/AGENTS.md`) |
 | `tooling/sync/` | Sync engine internals (see `tooling/sync/AGENTS.md`) |
 | `scripts/` | Local-only scripts (not synced) |
 
@@ -39,7 +39,8 @@ Source-of-truth seed template for all downstream Obsidian plugins in this monore
 
 ### Working In This Directory
 - **Prove patterns here first, then propagate** — never add a pattern directly to a downstream plugin without establishing it here
-- After any change to `tooling/shared/` or `src/shared/`, run `pnpm sync:plugins` to propagate
+- After any change to shared contract or harness surfaces, run `pnpm sync:plugins` to propagate
+- `src/shared/` is no longer a default downstream sync surface; treat it as legacy opt-in migration material only
 - `eslint.base.js` must import `eslint-plugin-obsidianmd` AND have a rules block — package.json alone is not enough
 - husky hooks MUST use `pnpm exec`, not `npx` — PATH is restricted in git hook context
 - Default branch is `master`, not `main`
@@ -59,6 +60,12 @@ node scripts/sync-to-plugins.mjs --targets obsidian-qmd,open-connections
 # Dry-run preview
 node scripts/sync-to-plugins.mjs --dry-run
 ```
+
+### Migration Rule
+
+- Default shared surfaces: docs/contracts/harness/CI-release/lint
+- Opt-in only: implementation helpers under `tooling/shared/src-shared/`
+- Use `sync.includeSharedImplementation: true` only as a temporary migration bridge for downstream repos not yet localized
 
 ## Dependencies
 

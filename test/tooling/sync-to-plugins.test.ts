@@ -266,5 +266,36 @@ describe('tooling sync', () => {
     expect(fs.readFileSync(path.join(targetRoot, 'scripts', 'release-notes.mjs'), 'utf8')).toBe(
       fs.readFileSync(path.join(templateRoot, 'tooling', 'shared', 'release-notes.mjs'), 'utf8'),
     );
+    expect(fs.existsSync(path.join(targetRoot, 'src', 'shared', 'plugin-notices.ts'))).toBe(false);
+  });
+
+  it('syncs shared implementation only when explicitly opted in', async () => {
+    const targetRoot = createTempTarget('opt-in-impl');
+    writeManagedRepoContract(targetRoot);
+    writeFile(
+      path.join(targetRoot, 'boiler.config.mjs'),
+      [
+        'export default {',
+        "  dev: { buildCommand: ['pnpm', 'run', 'dev:build'], deploy: { mode: 'delegate', envVar: 'DESTINATION_VAULTS' } },",
+        "  sync: { includeSharedImplementation: true },",
+        "  release: {",
+        "    pluginName: 'opt-in-impl-plugin',",
+        "    copyFiles: ['main.js'],",
+        "    publishFiles: ['${{ env.PLUGIN_NAME }}.zip'],",
+        '  },',
+        '};',
+        '',
+      ].join('\n'),
+    );
+
+    const plan = await buildSyncPlan({ templateRoot, targetRoot });
+    await applySyncPlan(plan);
+
+    expect(fs.readFileSync(path.join(targetRoot, 'src', 'shared', 'plugin-notices.ts'), 'utf8')).toBe(
+      fs.readFileSync(path.join(templateRoot, 'tooling', 'shared', 'src-shared', 'plugin-notices.ts'), 'utf8'),
+    );
+    expect(fs.readFileSync(path.join(targetRoot, 'src', 'shared', 'plugin-logger.ts'), 'utf8')).toBe(
+      fs.readFileSync(path.join(templateRoot, 'tooling', 'shared', 'src-shared', 'plugin-logger.ts'), 'utf8'),
+    );
   });
 });

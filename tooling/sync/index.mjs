@@ -59,7 +59,9 @@ const SHARED_FILE_SPECS = [
     source: ['tooling', 'shared', '.github', 'PULL_REQUEST_TEMPLATE.md'],
     destination: ['.github', 'PULL_REQUEST_TEMPLATE.md'],
   },
-  // Shared source modules
+];
+
+const IMPLEMENTATION_FILE_SPECS = [
   {
     source: ['tooling', 'shared', 'src-shared', 'plugin-notices.ts'],
     destination: ['src', 'shared', 'plugin-notices.ts'],
@@ -254,6 +256,13 @@ export function validateBoilerConfig(config, targetName = 'target') {
           (item) => Array.isArray(item) && item.every((segment) => typeof segment === 'string'),
         ),
       `${targetName}: sync.skipDestinations must be a string[][] when provided`,
+    );
+  }
+
+  if (config.sync?.includeSharedImplementation !== undefined) {
+    assert(
+      typeof config.sync.includeSharedImplementation === 'boolean',
+      `${targetName}: sync.includeSharedImplementation must be a boolean when provided`,
     );
   }
 
@@ -527,24 +536,14 @@ function pathSegmentsEqual(left, right) {
   return left.length === right.length && left.every((segment, index) => segment === right[index]);
 }
 
-export async function buildSyncPlan({ templateRoot, targetRoot }) {
-  validateManagedRepoContract(targetRoot);
-  const config = await loadBoilerConfig(targetRoot);
-  const operations = [];
-
-  const skipDestinations = config.sync?.skipDestinations ?? [];
-
-  for (const segments of SCAFFOLD_FOLDERS) {
-    const folderPath = path.join(targetRoot, ...segments);
-    if (!fs.existsSync(folderPath)) {
-      const operation = createWriteOperation(path.join(folderPath, '.gitkeep'), '');
-      if (operation) {
-        operations.push(operation);
-      }
-    }
-  }
-
-  for (const spec of SHARED_FILE_SPECS) {
+function appendWriteOperationsFromSpecs({
+  templateRoot,
+  targetRoot,
+  operations,
+  specs,
+  skipDestinations,
+}) {
+  for (const spec of specs) {
     if (skipDestinations.some((skip) => pathSegmentsEqual(skip, spec.destination))) {
       continue;
     }
@@ -556,6 +555,43 @@ export async function buildSyncPlan({ templateRoot, targetRoot }) {
     if (operation) {
       operations.push(operation);
     }
+  }
+}
+
+export async function buildSyncPlan({ templateRoot, targetRoot }) {
+  validateManagedRepoContract(targetRoot);
+  const config = await loadBoilerConfig(targetRoot);
+  const operations = [];
+
+  const skipDestinations = config.sync?.skipDestinations ?? [];
+  const includeSharedImplementation = config.sync?.includeSharedImplementation === true;
+
+  for (const segments of SCAFFOLD_FOLDERS) {
+    const folderPath = path.join(targetRoot, ...segments);
+    if (!fs.existsSync(folderPath)) {
+      const operation = createWriteOperation(path.join(folderPath, '.gitkeep'), '');
+      if (operation) {
+        operations.push(operation);
+      }
+    }
+  }
+
+  appendWriteOperationsFromSpecs({
+    templateRoot,
+    targetRoot,
+    operations,
+    specs: SHARED_FILE_SPECS,
+    skipDestinations,
+  });
+
+  if (includeSharedImplementation) {
+    appendWriteOperationsFromSpecs({
+      templateRoot,
+      targetRoot,
+      operations,
+      specs: IMPLEMENTATION_FILE_SPECS,
+      skipDestinations,
+    });
   }
 
   for (const spec of GENERATED_FILE_SPECS) {
