@@ -10,7 +10,21 @@ interface MyPluginSettings {
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: 'default'
-}
+};
+
+const UI_COPY = {
+	ribbonLabel: 'Boiler template plugin',
+	notice: 'Boiler template notice.',
+	statusBar: 'Boiler template ready.',
+	simpleCommand: 'Open example modal',
+	editorCommand: 'Insert example text',
+	editorInsertedText: 'Example editor command text.',
+	complexCommand: 'Open example modal (active note only)',
+	modalBody: 'Example modal content.',
+	settingName: 'Example setting',
+	settingDesc: 'Stored example text for this plugin.',
+	settingPlaceholder: 'Enter example text.',
+} as const;
 
 export default class MyPlugin extends Plugin {
 	settings: MyPluginSettings;
@@ -19,21 +33,21 @@ export default class MyPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample plugin', (evt: MouseEvent) => {
+		const ribbonIconEl = this.addRibbonIcon('dice', UI_COPY.ribbonLabel, (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
+			new Notice(UI_COPY.notice);
 		});
 		// Perform additional things with the ribbon
 		ribbonIconEl.addClass('my-plugin-ribbon-class');
 
 		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status bar text');
+		statusBarItemEl.setText(UI_COPY.statusBar);
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
 			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
+			name: UI_COPY.simpleCommand,
 			callback: () => {
 				new SampleModal(this.app).open();
 			}
@@ -41,16 +55,16 @@ export default class MyPlugin extends Plugin {
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
 			id: 'sample-editor-command',
-			name: 'Sample editor',
+			name: UI_COPY.editorCommand,
 			editorCallback: (editor: Editor, _view: MarkdownView) => {
 				// Use PluginLogger: this.logger.debug('selection', { text: editor.getSelection() })
-				editor.replaceSelection('Sample Editor Command');
+				editor.replaceSelection(UI_COPY.editorInsertedText);
 			}
 		});
 		// This adds a complex command that can check whether the current state of the app allows execution of the command
 		this.addCommand({
 			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
+			name: UI_COPY.complexCommand,
 			checkCallback: (checking: boolean) => {
 				// Conditions to check
 				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
@@ -102,7 +116,7 @@ class SampleModal extends Modal {
 
 	onOpen() {
 		const {contentEl} = this;
-		contentEl.setText('Woah!');
+		contentEl.setText(UI_COPY.modalBody);
 	}
 
 	onClose() {
@@ -125,10 +139,10 @@ class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
+			.setName(UI_COPY.settingName)
+			.setDesc(UI_COPY.settingDesc)
 			.addText(text => text
-				.setPlaceholder('Enter your secret')
+				.setPlaceholder(UI_COPY.settingPlaceholder)
 				.setValue(this.plugin.settings.mySetting)
 				.onChange(async (value) => {
 					this.plugin.settings.mySetting = value;
