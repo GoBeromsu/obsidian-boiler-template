@@ -1,5 +1,5 @@
 export class Plugin {
-  app: App
+  app!: App
   manifest: any
   loadData() { return Promise.resolve({}) }
   saveData(_data: any) { return Promise.resolve() }
@@ -9,7 +9,7 @@ export class Plugin {
   registerInterval(_id: number) { return _id }
 }
 export class Modal {
-  app: App
+  app!: App
   constructor(_app: App) { this.app = _app }
   open() {}
   close() {}
@@ -17,9 +17,9 @@ export class Modal {
   onClose() {}
 }
 export class PluginSettingTab {
-  app: App
+  app!: App
   plugin: any
-  containerEl: HTMLElement = document.createElement('div')
+  containerEl: HTMLElement = createDiv()
   constructor(_app: App, _plugin: any) {}
   display() {}
 }
