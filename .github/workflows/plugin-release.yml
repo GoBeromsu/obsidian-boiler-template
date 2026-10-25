@@ -22,20 +22,24 @@ jobs:
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
       - if: steps.v.outputs.skip != 'true'
+        uses: oven-sh/setup-bun@v2
+      - if: steps.v.outputs.skip != 'true'
+        name: Build
+        run: |
+          bun install --frozen-lockfile
+          bun run ci
+      # Checked out after CI so the plugin's lint/test globs never see .infra/.
+      - if: steps.v.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
           repository: GoBeromsu/obsidian-boiler-template
           path: .infra
       - if: steps.v.outputs.skip != 'true'
-        uses: oven-sh/setup-bun@v2
-      - if: steps.v.outputs.skip != 'true'
-        name: Build and publish
+        name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.v.outputs.version }}
         run: |
-          bun install --frozen-lockfile
-          bun run ci
           bun .infra/scripts/release-notes.ts "$VERSION" > "$RUNNER_TEMP/notes.md"
           ASSETS=(dist/main.js dist/manifest.json)
           [ -f dist/styles.css ] && ASSETS+=(dist/styles.css)
