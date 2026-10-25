@@ -1,14 +1,12 @@
-/* eslint-disable obsidianmd/sample-names -- boiler-template uses intentional placeholder names that downstream plugins rename */
-/* eslint-disable obsidianmd/commands/no-command-in-command-id -- boiler-template command IDs are sample placeholders */
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
+interface BoilerPluginSettings {
 	mySetting: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: BoilerPluginSettings = {
 	mySetting: 'default'
 };
 
@@ -26,8 +24,8 @@ const UI_COPY = {
 	settingPlaceholder: 'Enter example text.',
 } as const;
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class BoilerPlugin extends Plugin {
+	settings!: BoilerPluginSettings;
 
 	async onload() {
 		await this.loadSettings();
@@ -49,21 +47,21 @@ export default class MyPlugin extends Plugin {
 			id: 'open-sample-modal-simple',
 			name: UI_COPY.simpleCommand,
 			callback: () => {
-				new SampleModal(this.app).open();
+				new BoilerModal(this.app).open();
 			}
 		});
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
-			id: 'sample-editor-command',
+			id: 'sample-editor',
 			name: UI_COPY.editorCommand,
-			editorCallback: (editor: Editor, _view: MarkdownView) => {
+			editorCallback: (editor: Editor) => {
 				// Use PluginLogger: this.logger.debug('selection', { text: editor.getSelection() })
 				editor.replaceSelection(UI_COPY.editorInsertedText);
 			}
 		});
 		// This adds a complex command that can check whether the current state of the app allows execution of the command
 		this.addCommand({
-			id: 'open-sample-modal-complex',
+			id: 'open-sample-modal-conditional',
 			name: UI_COPY.complexCommand,
 			checkCallback: (checking: boolean) => {
 				// Conditions to check
@@ -72,7 +70,7 @@ export default class MyPlugin extends Plugin {
 					// If checking is true, we're simply "checking" if the command can be run.
 					// If checking is false, then we want to actually perform the operation.
 					if (!checking) {
-						new SampleModal(this.app).open();
+						new BoilerModal(this.app).open();
 					}
 
 					// This command will only show up in Command Palette when the check function returns true
@@ -83,7 +81,7 @@ export default class MyPlugin extends Plugin {
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new BoilerSettingTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -109,7 +107,7 @@ export default class MyPlugin extends Plugin {
 	}
 }
 
-class SampleModal extends Modal {
+class BoilerModal extends Modal {
 	constructor(app: App) {
 		super(app);
 	}
@@ -125,10 +123,10 @@ class SampleModal extends Modal {
 	}
 }
 
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+class BoilerSettingTab extends PluginSettingTab {
+	plugin: BoilerPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: BoilerPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
