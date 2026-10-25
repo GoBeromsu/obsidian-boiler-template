@@ -34,4 +34,11 @@ await $`git commit -m ${`chore(release): ${version}`}`;
 await $`git push -u origin ${branch}`;
 const pr = await out($`gh pr create --base main --head ${branch} --title ${`chore(release): ${version}`} --body ${"Version bump. The Release workflow tags and publishes after merge."}`);
 console.log(pr);
-await $`gh pr merge ${pr} --auto --merge --delete-branch`;
+// no auto-merge (needs a per-repo setting): wait for required checks, then admin-merge
+for (;;) {
+	const r = await $`gh pr checks ${pr} --watch`.nothrow().quiet();
+	if (r.exitCode === 0) break;
+	if (!r.stderr.includes("no checks reported")) throw new Error(`checks failed on ${pr}`);
+	await Bun.sleep(3000);
+}
+await $`gh pr merge ${pr} --merge --admin --delete-branch`;
