@@ -26,7 +26,7 @@ export default tseslint.config(
 	},
 	...obsidianmd.configs.recommended,
 	// Disable depend/ban-dependencies -- too aggressive for the plugin ecosystem
-	// (flags legitimate devDeps like lint-staged, builtin-modules).
+	// (flags legitimate devDeps like lint-staged).
 	{
 		rules: {
 			'depend/ban-dependencies': 'off',
