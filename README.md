@@ -19,6 +19,10 @@ Plugins share no code with each other. Dev-vault deployment (`.dev-vault`) is do
 | `bun run ci` | build + typecheck + lint + test |
 | `bun run release <patch\|minor\|major>` | opens a version-bump PR (see Release) |
 
+## Naming
+
+GitHub repo = local folder = `package.json` name = `obsidian-<slug>`. `manifest.json` id = `<slug>` (no "obsidian" in the id, per Obsidian guidelines). Published ids never change.
+
 ## What a plugin contains
 
 `package.json` scripts (identical in every plugin):

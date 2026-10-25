@@ -1,5 +1,5 @@
 {
-	"id": "sample-plugin",
+	"id": "boiler-template",
 	"name": "Sample Plugin",
 	"version": "1.0.7",
 	"minAppVersion": "1.13.0",
