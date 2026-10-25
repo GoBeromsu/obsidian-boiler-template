@@ -1,0 +1,42 @@
+name: Plugin Release
+
+on: workflow_call
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Read version
+        id: v
+        run: |
+          VERSION=$(jq -r .version manifest.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+            echo "Tag $VERSION exists; nothing to release."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.v.outputs.skip != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: GoBeromsu/obsidian-boiler-template
+          path: .infra
+      - if: steps.v.outputs.skip != 'true'
+        uses: oven-sh/setup-bun@v2
+      - if: steps.v.outputs.skip != 'true'
+        name: Build and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          bun install --frozen-lockfile
+          bun run ci
+          bun .infra/scripts/release-notes.ts "$VERSION" > "$RUNNER_TEMP/notes.md"
+          ASSETS=(dist/main.js dist/manifest.json)
+          [ -f dist/styles.css ] && ASSETS+=(dist/styles.css)
+          gh release create "$VERSION" "${ASSETS[@]}" --target "$GITHUB_SHA" --title "$VERSION" --notes-file "$RUNNER_TEMP/notes.md"

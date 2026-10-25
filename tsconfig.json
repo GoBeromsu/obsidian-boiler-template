@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "inlineSourceMap": true,
-    "inlineSources": true,
+    "inlineSourceMap": false,
     "module": "ESNext",
     "target": "ES6",
     "allowJs": true,
@@ -17,13 +16,23 @@
     "strictBindCallApply": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@domain/*": ["./src/domain/*"],
-      "@ui/*": ["./src/ui/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@domain/*": [
+        "./src/domain/*"
+      ],
+      "@ui/*": [
+        "./src/ui/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ]
     },
-    "lib": ["DOM", "ES2020"],
-    "types": ["node"]
+    "lib": [
+      "DOM",
+      "ES2020"
+    ],
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "src/**/*.ts",

@@ -1,139 +1,75 @@
-# Obsidian Plugin Boilerplate
+# obsidian-boiler-template
 
-Source-of-truth seed template for Obsidian plugin development. New patterns are proven here first; downstream plugins adopt them by referencing this repo.
+Reference for every Obsidian plugin in this family. It is also the home of the shared CI/release infrastructure: plugins carry thin callers, never copies.
 
-## Features
+## Layers
 
-- **Unified dev workflow** -- vault selection + esbuild watch + hot reload across all plugins
-- **Version management** -- automated version bumping for `package.json`, `manifest.json`, and `versions.json`
-- **Release pipeline** -- CI + GitHub Actions release workflows, generated from templates
+1. **Infra** (this repo, `.github/workflows/plugin-*.yml`, `scripts/`): CI, release, release notes. Consumed by reference.
+2. **Obsidian plugin** (`src/main.ts`, `src/ui/`, `styles.css`): lifecycle, UI, Obsidian APIs. Settings use `getSettingDefinitions()`.
+3. **Domain** (`src/domain/`, `src/types/`, `src/utils/`): pure logic, must not import `obsidian` (lint-enforced).
 
-## Quick Start
+Plugins share no code with each other. Dev-vault deployment (`.dev-vault`) is done by the root workspace tooling, not by plugins.
 
-### Fork and Clone
+## Dev contract
 
-1. Fork this repository at `https://github.com/GoBeromsu/obsidian-boiler-template`
-2. Clone your fork:
+| Command | Result |
+|---|---|
+| `bun run dev` | esbuild watch into `dist/` |
+| `bun run build` | production build into `dist/` (`main.js`, `manifest.json`, `styles.css` if present) |
+| `bun run ci` | build + typecheck + lint + test |
+| `bun run release <patch\|minor\|major>` | opens a version-bump PR (see Release) |
 
-```bash
-git clone https://github.com/your-username/obsidian-boiler-template.git
-cd obsidian-boiler-template
-pnpm install
+## What a plugin contains
+
+`package.json` scripts (identical in every plugin):
+
+```json
+"dev": "bun esbuild.config.mjs",
+"build": "bun esbuild.config.mjs production",
+"typecheck": "tsc --noEmit --skipLibCheck",
+"lint": "eslint .",
+"test": "vitest run",
+"ci": "bun run build && bun run typecheck && bun run lint && bun run test",
+"release": "curl -fsSL https://raw.githubusercontent.com/GoBeromsu/obsidian-boiler-template/main/scripts/release.ts | bun run -"
 ```
 
-3. Update personal details before publishing:
-   - `LICENSE`
-   - `package.json` (name, author, description)
-   - `manifest.json` (id, name, author, description)
+Files: `bun.lock`, `esbuild.config.mjs`, `tsconfig.json`, `eslint.config.mts`, `vitest.config.ts`, `manifest.json`, `versions.json`, `styles.css` (optional), and the two callers below. Copy the config files from this repo once when porting. Delete: `pnpm-lock.yaml`, `.npmrc`, `packageManager`, `scripts/`, `boiler.config.mjs`, `src/shared/`, husky/commitlint/lint-staged, old workflows.
 
-4. Start development:
+`.github/workflows/ci.yml`:
 
-```bash
-pnpm dev
+```yaml
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  ci:
+    uses: GoBeromsu/obsidian-boiler-template/.github/workflows/plugin-ci.yml@main
 ```
 
-## Reference Artifacts
+`.github/workflows/release.yml`:
 
-Downstream plugins use these files as references rather than synced copies:
-
-| File | Description |
-|------|-------------|
-| `scripts/dev.mjs` | Dev orchestrator (vault discovery + esbuild watch) |
-| `scripts/version.mjs` | Version bump script |
-| `scripts/release.mjs` | Release entrypoint |
-| `scripts/release-notes.mjs` | Release notes reader |
-| `.github/workflows/ci.yml` | CI workflow |
-| `.github/workflows/release.yml` | Release workflow |
-
-## Plugin Development Workflow
-
-1. Make changes in `src/`
-2. Run `pnpm dev` to build and sync plugin output into a target vault
-3. Reload the plugin in Obsidian
-4. Enable the plugin in Obsidian settings if needed
-
-## Tech Stack
-
-| Category | Technology |
-|----------|------------|
-| Platform | Obsidian Plugin API |
-| Language | TypeScript 5 |
-| Bundler | esbuild |
-| Testing | Vitest |
-| Linting | ESLint + Husky + lint-staged + commitlint |
-
-## Project Structure
-
-```
-obsidian-boiler-template/
-├── src/
-│   ├── main.ts               # Plugin source (entry point)
-│   └── shared/               # Reference helpers (logger, notices, settings migration)
-├── scripts/
-│   ├── dev.mjs               # Dev orchestrator
-│   ├── version.mjs           # Version bump
-│   ├── release.mjs           # Release entrypoint
-│   └── release-notes.mjs     # Release notes reader
-├── boiler.config.mjs         # Per-repo config (dev, version, CI, release)
-└── manifest.json             # Obsidian plugin manifest
+```yaml
+name: Release
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  release:
+    uses: GoBeromsu/obsidian-boiler-template/.github/workflows/plugin-release.yml@main
 ```
 
-## Release Notes Format
+Required status check on `main`: **`ci / report`**.
 
-GitHub Actions is the canonical publisher. Optional release notes live in `releases/<version>.md`:
+## Release
 
-```md
-# Release 1.2.3
+`bun run release patch|minor|major` requires a clean, up-to-date `main`, bumps `package.json`, `manifest.json`, `versions.json`, pushes `chore/release-<version>`, opens a PR and enables auto-merge. It never tags. When the PR lands on `main`, the Release workflow reads `manifest.json`; if tag `<version>` (no `v` prefix) does not exist it builds and creates the tag and GitHub release with `main.js`, `manifest.json`, `styles.css`.
 
-## Summary
-- Short explanation of the release.
+Release notes: `releases/<version>.md` if present, otherwise Conventional Commits since the previous tag grouped into Features / Fixes / Other.
 
-## Added
-- Optional
-
-## Changed
-- Optional
-
-## Fixed
-- Optional
-```
-
-If the file does not exist, the workflow publishes a deterministic fallback body.
-
-## Development
-
-```bash
-pnpm install
-pnpm dev            # vault selection + esbuild watch + hot reload
-pnpm build          # tsc type-check + production build
-pnpm test           # Vitest unit tests
-pnpm lint           # ESLint
-pnpm run ci         # build + lint + test
-```
-
-## Pre-Community-Submission Checklist
-
-Before submitting to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases), run:
-
-```bash
-pnpm lint   # includes eslint-plugin-obsidianmd rules
-```
-
-Key ObsidianReviewBot rules enforced automatically:
-
-- **No plugin name in command name** — `obsidianmd/commands/no-plugin-name-in-command-name`: Obsidian prepends the plugin name; don't repeat it.
-- **No plugin ID in command ID** — `obsidianmd/commands/no-plugin-id-in-command-id`: command IDs must not contain the plugin ID as a prefix.
-- **No "command" in command name** — `obsidianmd/commands/no-command-in-command-name`: redundant word in palette entries.
-- **Sentence case UI text** — `obsidianmd/ui/sentence-case`: all user-facing strings must use sentence case (e.g. `'Open note'` not `'Open Note'`).
-- **No manual HTML headings in settings** — `obsidianmd/settings-tab/no-manual-html-headings`: use `Setting.setHeading()` instead of raw `<h2>`/`<h3>`.
-- **No hardcoded config path** — `obsidianmd/hardcoded-config-path`: never hardcode `.obsidian/` paths; use `app.vault.configDir`.
-
-## Release Checklist
-
-1. Publish an initial version
-2. Ensure the repo root contains a `README.md`
-3. Submit a pull request to [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases)
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+Network access disclosure: the `release` script and release workflow fetch scripts from this public repo.
