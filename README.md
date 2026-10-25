@@ -39,6 +39,8 @@ GitHub repo = local folder = `package.json` name = `obsidian-<slug>`. `manifest.
 
 Files: `bun.lock`, `esbuild.config.mjs`, `tsconfig.json`, `eslint.config.mts`, `vitest.config.ts`, `manifest.json`, `versions.json`, `styles.css` (optional), and the two callers below. Copy the config files from this repo once when porting. Delete: `pnpm-lock.yaml`, `.npmrc`, `packageManager`, `scripts/`, `boiler.config.mjs`, `src/shared/`, husky/commitlint/lint-staged, old workflows.
 
+README: copy [`docs/README-template.md`](docs/README-template.md) (visuals: [`docs/README-visuals.md`](docs/README-visuals.md)), fill every placeholder, delete unused sections.
+
 `.github/workflows/ci.yml`:
 
 ```yaml
