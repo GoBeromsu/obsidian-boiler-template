@@ -4,7 +4,7 @@
 
 ## Overview
 
-Source-of-truth seed template for new Obsidian plugins. Changes here get propagated to all downstream plugins via the `obsidian-propagate` skill or `pnpm sync:plugins`.
+Reference template for Obsidian plugins. Downstream plugins are not synced mechanically; agents read this repo as a reference when working on them.
 
 ## Build Commands
 
@@ -19,34 +19,20 @@ pnpm run ci         # build + lint + test
 pnpm release:patch  # ci → patch bump → auto-push tag
 pnpm release:minor  # ci → minor bump → auto-push tag
 pnpm release:major  # ci → major bump → auto-push tag
-pnpm sync:plugins   # propagate template changes to downstream plugins
-pnpm sync:check     # fail if managed repos drift from the template
 ```
-
-### sync:plugins options
-
-```bash
-node scripts/sync-to-plugins.mjs --dry-run                          # preview without writing
-node scripts/sync-to-plugins.mjs --targets plugin-a,plugin-b        # sync specific targets only
-```
-
-Synced artifacts: `scripts/dev.mjs`, `scripts/version.mjs`, `.github/workflows/ci.yml`, `.github/workflows/release.yml`.
-Managed release helpers: `scripts/release.mjs`, `scripts/release-notes.mjs`.
 
 ## Role
 
-This repo serves as the canonical template. The workflow is:
+This repo serves as the reference template. The workflow is:
 1. Prove a new pattern here first
-2. Propagate to downstream plugins via `sync:plugins` or the `obsidian-propagate` skill
-3. Never diverge downstream plugins from this template without deliberate reason
+2. Port it to downstream plugins by hand, adapting to each plugin as needed
 
 ## Project Layout
 
 ```
 src/                  # Plugin source (entry: main.ts)
-scripts/              # dev.mjs, version.mjs, sync-to-plugins.mjs
-tooling/shared/       # Canonical dev/version/release scripts (synced to plugins)
-tooling/sync/         # Sync engine & workflow renderers
+scripts/              # dev.mjs, version.mjs, release.mjs, release-notes.mjs
+src/shared/           # Reference helpers (logger, notices, settings migration)
 boiler.config.mjs     # Per-repo config (dev deploy, version staging, CI, release)
 ```
 
@@ -60,6 +46,6 @@ boiler.config.mjs     # Per-repo config (dev deploy, version staging, CI, releas
 
 ## Gotchas
 
-- Default branch is `master` (not `main`)
+- Default branch is `main`
 - Tab indentation, width 4 (enforced by `.editorconfig`)
 - `boiler.config.mjs` defines per-repo values — each downstream plugin has its own copy
