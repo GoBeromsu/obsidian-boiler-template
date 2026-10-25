@@ -1,14 +1,12 @@
 # Obsidian Plugin Boilerplate
 
-Source-of-truth seed template for Obsidian plugin development. New patterns are proven here first, then propagated to all downstream plugins via the built-in sync engine.
+Source-of-truth seed template for Obsidian plugin development. New patterns are proven here first; downstream plugins adopt them by referencing this repo.
 
 ## Features
 
 - **Unified dev workflow** -- vault selection + esbuild watch + hot reload across all plugins
 - **Version management** -- automated version bumping for `package.json`, `manifest.json`, and `versions.json`
 - **Release pipeline** -- CI + GitHub Actions release workflows, generated from templates
-- **Sync engine** -- propagate shared contracts, scripts, and workflows to downstream plugin repos
-- **Drift detection** -- check whether managed repos have diverged from the template
 
 ## Quick Start
 
@@ -34,9 +32,9 @@ pnpm install
 pnpm dev
 ```
 
-## Synced Artifacts
+## Reference Artifacts
 
-The sync engine copies or renders these files into each target plugin repo by default:
+Downstream plugins use these files as references rather than synced copies:
 
 | File | Description |
 |------|-------------|
@@ -44,23 +42,12 @@ The sync engine copies or renders these files into each target plugin repo by de
 | `scripts/version.mjs` | Version bump script |
 | `scripts/release.mjs` | Release entrypoint |
 | `scripts/release-notes.mjs` | Release notes reader |
-| `.github/workflows/ci.yml` | CI workflow (rendered from template) |
-| `.github/workflows/release.yml` | Release workflow (rendered from template) |
-
-Shared implementation under `tooling/shared/src-shared/` is now **opt-in only** and intended as a temporary migration bridge, not a default sync surface.
-
-### Running the Sync
-
-```bash
-pnpm sync:plugins                                             # sync all targets
-pnpm sync:check                                               # fail if any repo has drifted
-node scripts/sync-to-plugins.mjs --dry-run                    # preview without writing
-node scripts/sync-to-plugins.mjs --targets plugin-a,plugin-b  # sync specific targets
-```
+| `.github/workflows/ci.yml` | CI workflow |
+| `.github/workflows/release.yml` | Release workflow |
 
 ## Plugin Development Workflow
 
-1. Make changes in docs/contracts/harness/tooling first
+1. Make changes in `src/`
 2. Run `pnpm dev` to build and sync plugin output into a target vault
 3. Reload the plugin in Obsidian
 4. Enable the plugin in Obsidian settings if needed
@@ -74,7 +61,6 @@ node scripts/sync-to-plugins.mjs --targets plugin-a,plugin-b  # sync specific ta
 | Bundler | esbuild |
 | Testing | Vitest |
 | Linting | ESLint + Husky + lint-staged + commitlint |
-| Sync | Custom Node.js sync engine |
 
 ## Project Structure
 
@@ -82,15 +68,12 @@ node scripts/sync-to-plugins.mjs --targets plugin-a,plugin-b  # sync specific ta
 obsidian-boiler-template/
 ├── src/
 │   ├── main.ts               # Plugin source (entry point)
-│   └── shared/               # Legacy opt-in implementation helpers only
+│   └── shared/               # Reference helpers (logger, notices, settings migration)
 ├── scripts/
 │   ├── dev.mjs               # Dev orchestrator
 │   ├── version.mjs           # Version bump
 │   ├── release.mjs           # Release entrypoint
-│   └── sync-to-plugins.mjs   # Sync engine CLI
-├── tooling/
-│   ├── shared/               # Canonical contract/harness scripts and opt-in legacy helpers
-│   └── sync/                 # Sync engine + workflow renderers
+│   └── release-notes.mjs     # Release notes reader
 ├── boiler.config.mjs         # Per-repo config (dev, version, CI, release)
 └── manifest.json             # Obsidian plugin manifest
 ```
@@ -117,22 +100,6 @@ GitHub Actions is the canonical publisher. Optional release notes live in `relea
 
 If the file does not exist, the workflow publishes a deterministic fallback body.
 
-## Shared Surface Policy
-
-- **Shared by default:** docs, CI/release contracts, issue/PR templates, lint/type/boundary rules, harness scripts
-- **Opt-in only:** implementation helpers under `tooling/shared/src-shared/`
-- **Local by default:** product implementation, deploy/runtime-specific code, repo-specific commands
-
-To temporarily keep shared implementation syncing for a downstream repo, set:
-
-```js
-sync: {
-  includeSharedImplementation: true,
-}
-```
-
-This is a migration bridge, not the desired steady state.
-
 ## Development
 
 ```bash
@@ -142,8 +109,6 @@ pnpm build          # tsc type-check + production build
 pnpm test           # Vitest unit tests
 pnpm lint           # ESLint
 pnpm run ci         # build + lint + test
-pnpm sync:plugins   # propagate changes to downstream plugins
-pnpm sync:check     # verify no drift in managed repos
 ```
 
 ## Pre-Community-Submission Checklist

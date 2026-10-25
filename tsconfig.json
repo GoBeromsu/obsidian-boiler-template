@@ -27,7 +27,6 @@
   },
   "include": [
     "src/**/*.ts",
-    "test/**/*.ts",
-    "tooling/shared/src-shared/**/*.ts"
+    "test/**/*.ts"
   ]
 }
