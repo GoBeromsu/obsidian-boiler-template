@@ -45,9 +45,8 @@ jobs:
           ASSETS=(dist/main.js dist/manifest.json)
           [ -f dist/styles.css ] && ASSETS+=(dist/styles.css)
           gh release create "$VERSION" "${ASSETS[@]}" --target "$GITHUB_SHA" --title "$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
-      # Best effort: callers without id-token/attestations: write still release.
+      # Callers must grant id-token + attestations: write.
       - if: steps.v.outputs.skip != 'true'
-        continue-on-error: true
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: |
