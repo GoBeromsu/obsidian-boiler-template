@@ -5,7 +5,7 @@ import { globalIgnores } from 'eslint/config';
 
 let vitestPlugin = null;
 try {
-	const imported = await import('eslint-plugin-vitest');
+	const imported = await import('@vitest/eslint-plugin');
 	vitestPlugin = imported.default ?? imported;
 } catch {
 	vitestPlugin = null;
@@ -26,7 +26,7 @@ export default tseslint.config(
 	},
 	...obsidianmd.configs.recommended,
 	// Disable depend/ban-dependencies -- too aggressive for the plugin ecosystem
-	// (flags legitimate devDeps like lint-staged).
+	// (flags legitimate devDeps like lint-staged, builtin-modules).
 	{
 		rules: {
 			'depend/ban-dependencies': 'off',
