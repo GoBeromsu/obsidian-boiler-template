@@ -2,8 +2,9 @@ name: Plugin Release
 
 on: workflow_call
 
-permissions:
-  contents: write
+# No permissions block: a called workflow cannot exceed its caller, and declaring
+# id-token/attestations here would fail every caller that has not granted them yet.
+# Callers grant contents: write (required) plus id-token + attestations: write (provenance).
 
 jobs:
   release:
@@ -44,3 +45,12 @@ jobs:
           ASSETS=(dist/main.js dist/manifest.json)
           [ -f dist/styles.css ] && ASSETS+=(dist/styles.css)
           gh release create "$VERSION" "${ASSETS[@]}" --target "$GITHUB_SHA" --title "$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
+      # Best effort: callers without id-token/attestations: write still release.
+      - if: steps.v.outputs.skip != 'true'
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/main.js
+            dist/manifest.json
+            dist/styles.css
